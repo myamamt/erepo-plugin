@@ -3,6 +3,10 @@
 	"name": "Error Repository Plugin",
 	"version": "1.0.0",
 
+    "permissions": [
+        "storage"
+    ],
+
 	"content_scripts": [{
 		"matches": [ "<all_urls>" ],
     	"js": [ "script.js" ],

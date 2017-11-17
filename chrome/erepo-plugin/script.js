@@ -1,4 +1,15 @@
-console.log('Error Repository Plugin starts monitoring')
+console.log('Error Repository Plugin starts monitoring');
+
+// URLのクエリ部分を隠すfunction
+var hideQuery = function(str) {
+    var index = str.indexOf('?');
+    if (index == -1) {
+        return str;
+    } else {
+        return str.substring(0, index) + '?[query]';
+    }
+}
+console.log(hideQuery(window.location.href));
 
 // pageで即時実行させるfunction
 var codeToInject = function() {
