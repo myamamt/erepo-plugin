@@ -1,4 +1,4 @@
-console.log('ErrorCollector starts monitoring')
+console.log('Error Repository Plugin starts monitoring')
 
 // pageで即時実行させるfunction
 var codeToInject = function() {
