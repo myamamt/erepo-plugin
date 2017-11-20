@@ -1,8 +1,4 @@
 console.log('Error Repository Plugin starts monitoring');
-chrome.storage.sync.get(['query', 'cookie', 'verify'], function(data) {
-    console.log(data);
-});
-console.log(document.cookie);
 
 // URLのクエリ部分を隠すfunction
 var hideQuery = function(str) {
