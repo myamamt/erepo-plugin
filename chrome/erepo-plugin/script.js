@@ -9,24 +9,21 @@ var hideQuery = function(str) {
         return str.substring(0, index) + '?[query]';
     }
 }
-console.log(hideQuery(window.location.href));
 
-// pageで即時実行させるfunction
+// content scriptからスタックトレース(e.error.stack)を取得できないため
+// pageで起きたイベントをCustomEventを利用して送信
 var codeToInject = function() {
     window.addEventListener('error', function(e) {
-		var data = {
-			url: window.location.href,
-			filename: e.filename,
-			lineno: e.lineno,
-			colno: e.colno,
-			message: e.message,
-			stack_trace: e.error.stack,
-			user_agent: navigator.userAgent,
-			date: new Date()
-		};
-
+        var error = {
+            filename: e.filename,
+		    lineno: e.lineno,
+		    colno: e.colno,
+		    message: e.message,
+		    stack_trace: e.error.stack
+        }
+       
 		// content scriptにイベント送信
-        document.dispatchEvent(new CustomEvent('ReportError', {detail: data}));
+        document.dispatchEvent(new CustomEvent('ReportError', {detail: error}));
     });
 }
 
@@ -38,9 +35,36 @@ script.parentNode.removeChild(script);
 
 // pageからイベント受信
 document.addEventListener('ReportError', function(e) {
-	//収集サーバにエラー情報を送信
-	var xhr = new XMLHttpRequest();
-	xhr.open('POST', 'https://tyr.ics.es.osaka-u.ac.jp/error-collect');
-	xhr.setRequestHeader("Content-Type", "application/json");
-	xhr.send(JSON.stringify(e.detail));
+    var data = {
+        filename: e.detail.filename,
+		lineno: e.detail.lineno,
+		colno: e.detail.colno,
+		message: e.detail.message,
+		stack_trace: e.detail.stack_trace,
+		user_agent: navigator.userAgent,
+		date: new Date()
+    }
+    
+    chrome.storage.sync.get(['query', 'cookie', 'verify'], function(setting) {
+        if (setting['query']) {
+            data.url = window.location.href;
+        } else {
+            data.url = hideQuery(window.location.href);
+        }
+
+        if (setting['cookie']) {
+            data.cookie = document.cookie;
+        } else if (document.cookie != '') {
+            data.cookie = '[cookie]'
+        } else {
+            data.cookie = '';
+        }
+
+        console.log(JSON.stringify(data));
+    });
+	// //収集サーバにエラー情報を送信
+	// var xhr = new XMLHttpRequest();
+	// xhr.open('POST', 'https://tyr.ics.es.osaka-u.ac.jp/error-collect');
+	// xhr.setRequestHeader("Content-Type", "application/json");
+	// xhr.send(JSON.stringify(e.data));
 });
