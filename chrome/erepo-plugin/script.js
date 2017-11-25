@@ -19,7 +19,7 @@ var codeToInject = function() {
 		    lineno: e.lineno,
 		    colno: e.colno,
 		    message: e.message,
-		    stack_trace: e.error.stack
+		    stackTrace: e.error.stack
         }
        
 		// content scriptにイベント送信
@@ -36,12 +36,12 @@ script.parentNode.removeChild(script);
 // pageからイベント受信
 document.addEventListener('ReportError', function(e) {
     var data = {
-        filename: e.detail.filename,
-		lineno: e.detail.lineno,
-		colno: e.detail.colno,
+        fileName: e.detail.filename,
+		lineNumber: e.detail.lineno,
+		columnNumber: e.detail.colno,
 		message: e.detail.message,
-		stack_trace: e.detail.stack_trace,
-		user_agent: navigator.userAgent,
+		stackTrace: e.detail.stackTrace,
+		userAgent: navigator.userAgent,
 		date: new Date()
     }
     
@@ -60,6 +60,7 @@ document.addEventListener('ReportError', function(e) {
             data.cookie = '';
         }
 
+        console.log(JSON.stringify(data));
 	    // 収集サーバにエラー情報を送信
 	    var xhr = new XMLHttpRequest();
 	    xhr.open('POST', 'http://localhost:8080/api/info/');
