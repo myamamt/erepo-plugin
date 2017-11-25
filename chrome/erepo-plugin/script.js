@@ -60,11 +60,10 @@ document.addEventListener('ReportError', function(e) {
             data.cookie = '';
         }
 
-        console.log(JSON.stringify(data));
+	    // 収集サーバにエラー情報を送信
+	    var xhr = new XMLHttpRequest();
+	    xhr.open('POST', 'http://localhost:8080/api/info/');
+	    xhr.setRequestHeader("Content-Type", "application/json");
+	    xhr.send(JSON.stringify(data));
     });
-	// //収集サーバにエラー情報を送信
-	// var xhr = new XMLHttpRequest();
-	// xhr.open('POST', 'https://tyr.ics.es.osaka-u.ac.jp/error-collect');
-	// xhr.setRequestHeader("Content-Type", "application/json");
-	// xhr.send(JSON.stringify(e.data));
 });
