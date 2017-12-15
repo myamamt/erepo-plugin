@@ -3,12 +3,12 @@ console.log('Error Repository Plugin starts monitoring');
 // URLのクエリ部分を隠すfunction
 var hideQuery = function(str) {
     var index = str.indexOf('?');
-    if (index == -1) {
+    if (index === -1) {
         return str;
     } else {
         return str.substring(0, index) + '?[query]';
     }
-}
+};
 
 // content scriptからスタックトレース(e.error.stack)を取得できないため
 // pageで起きたイベントをCustomEventを利用して送信
@@ -20,12 +20,12 @@ var codeToInject = function() {
 		    colno: e.colno,
 		    message: e.message,
 		    stackTrace: e.error.stack
-        }
+        };
        
 		// content scriptにイベント送信
         document.dispatchEvent(new CustomEvent('ReportError', {detail: error}));
     });
-}
+};
 
 // pageでイベントを送信させるfunctionを即時実行
 var script = document.createElement('script');
@@ -35,7 +35,7 @@ script.parentNode.removeChild(script);
 
 // pageからイベント受信
 document.addEventListener('ReportError', function(e) {
-    var data = {
+    var info = {
         fileName: e.detail.filename,
 		lineNumber: e.detail.lineno,
 		columnNumber: e.detail.colno,
@@ -43,28 +43,43 @@ document.addEventListener('ReportError', function(e) {
 		stackTrace: e.detail.stackTrace,
 		userAgent: navigator.userAgent,
 		date: new Date()
-    }
+    };
     
     chrome.storage.sync.get(['query', 'cookie', 'verify'], function(setting) {
         if (setting['query']) {
-            data.url = window.location.href;
+            info.url = window.location.href;
         } else {
-            data.url = hideQuery(window.location.href);
+            info.url = hideQuery(window.location.href);
         }
 
         if (setting['cookie']) {
-            data.cookie = document.cookie;
-        } else if (document.cookie != '') {
-            data.cookie = '[cookie]'
+            info.cookie = document.cookie;
+        } else if (document.cookie !== '') {
+            info.cookie = '[cookie]'
         } else {
-            data.cookie = '';
+            info.cookie = '';
         }
 
-        console.log(JSON.stringify(data));
-	    // 収集サーバにエラー情報を送信
-	    var xhr = new XMLHttpRequest();
-	    xhr.open('POST', 'https://tyr.ics.es.osaka-u.ac.jp/erepo/api/info/');
-	    xhr.setRequestHeader("Content-Type", "application/json");
-	    xhr.send(JSON.stringify(data));
+        saveInfo(info);
+
+        console.log(JSON.stringify(info));
+	    // // 収集サーバにエラー情報を送信
+	    // var xhr = new XMLHttpRequest();
+	    // xhr.open('POST', 'https://tyr.ics.es.osaka-u.ac.jp/erepo/api/info/');
+	    // xhr.setRequestHeader("Content-Type", "application/json");
+	    // xhr.send(JSON.stringify(info));
     });
 });
+
+var saveInfo = function(info) {
+    chrome.storage.local.get('list', function(data) {
+        var list;
+        if (data['list']) {
+            list = data['list'];
+        } else {
+            list = [];
+        }
+        list.push(info);
+        chrome.storage.local.set({list: list});
+    });
+};

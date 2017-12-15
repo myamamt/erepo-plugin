@@ -15,15 +15,15 @@ window.onload = function() {
         }
     });
     document.getElementById('save').onclick = save;
-}
+};
 
-function save() {
+var save = function() {
     var data = {
         'query': document.getElementById('query').checked,
         'cookie': document.getElementById('cookie').checked,
         'verify': document.getElementById('verify').checked
     };
     chrome.storage.sync.set(data, function() {
-        alert('保存しました');
+        alert('設定を保存しました');
     });
-}
+};
