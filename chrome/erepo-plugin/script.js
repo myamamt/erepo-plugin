@@ -2,12 +2,7 @@ console.log('Error Repository Plugin starts monitoring');
 
 // URLのクエリ部分を隠すfunction
 var hideQuery = function(str) {
-    var index = str.indexOf('?');
-    if (index === -1) {
-        return str;
-    } else {
-        return str.substring(0, index) + '?[query]';
-    }
+    return str.replace(/(https?:.*?\?).*/g, '$1[query]');
 };
 
 // content scriptからスタックトレース(e.error.stack)を取得できないため
@@ -42,14 +37,18 @@ document.addEventListener('ReportError', function(e) {
 		message: e.detail.message,
 		stackTrace: e.detail.stackTrace,
 		userAgent: navigator.userAgent,
-		date: new Date()
+		date: new Date().toJSON()
     };
     
-    chrome.storage.sync.get(['query', 'cookie', 'verify'], function(setting) {
+    chrome.storage.sync.get(['query', 'cookie'], function(setting) {
         if (setting['query']) {
             info.url = window.location.href;
         } else {
             info.url = hideQuery(window.location.href);
+            info.fileName = hideQuery(info.fileName);
+            if (info.stackTrace) {
+                info.stackTrace = hideQuery(info.stackTrace);
+            }
         }
 
         if (setting['cookie']) {
@@ -61,25 +60,37 @@ document.addEventListener('ReportError', function(e) {
         }
 
         saveInfo(info);
-
-        console.log(JSON.stringify(info));
-	    // // 収集サーバにエラー情報を送信
-	    // var xhr = new XMLHttpRequest();
-	    // xhr.open('POST', 'https://tyr.ics.es.osaka-u.ac.jp/erepo/api/info/');
-	    // xhr.setRequestHeader("Content-Type", "application/json");
-	    // xhr.send(JSON.stringify(info));
     });
 });
 
 var saveInfo = function(info) {
     chrome.storage.local.get('list', function(data) {
-        var list;
-        if (data['list']) {
-            list = data['list'];
-        } else {
-            list = [];
+        var localDateString = new Date().toLocaleDateString();
+        if (!data.list) {
+            data.list = {};
         }
-        list.push(info);
-        chrome.storage.local.set({list: list});
+        if (!data.list[localDateString]) {
+            data.list[localDateString] = [];
+        }
+
+        // 同日の同エラーがあるかチェック
+        var conflictFlg = false;
+        data.list[localDateString].forEach(function (savedInfo) {
+            if (savedInfo.url === info.url && savedInfo.message === info.message) {
+                conflictFlg = true;
+            }
+        });
+
+        // 重複していなければエラー情報を送信
+        if (conflictFlg === false) {
+            data.list[localDateString].push(info);
+            chrome.storage.local.set(data);
+
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', 'http://localhost:8443/erepo/api/info/');
+            // xhr.open('POST', 'https://tyr.ics.es.osaka-u.ac.jp/erepo/api/info/');
+            xhr.setRequestHeader("Content-Type", "application/json");
+            xhr.send(JSON.stringify(info));
+        }
     });
 };
