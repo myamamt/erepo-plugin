@@ -7,7 +7,6 @@ window.addEventListener('error', function(e) {
 		lineno: e.lineno,
 		colno: e.colno,
 		message: e.message,
-		stack_trace: stackTrace,
 		user_agent: navigator.userAgent,
 		date: new Date()
 	};
