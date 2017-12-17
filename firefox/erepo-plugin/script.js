@@ -1,9 +1,6 @@
 console.log('ErrorCollector starts monitoring')
 
 window.addEventListener('error', function(e) {
-	//Firefoxはエラーの呼び出し関係が階層的でない時，stackプロパティを持たない
-	var stackTrace = e.error.stack ? e.error.stack : '';
-
 	var data = {
 		url: window.location.href,
 		filename: e.filename,
@@ -14,6 +11,11 @@ window.addEventListener('error', function(e) {
 		user_agent: navigator.userAgent,
 		date: new Date()
 	};
+
+    //Firefoxはエラーの呼び出し関係が階層的でない時，stackプロパティを持たない
+	if (e.error.stack) {
+	    data.stack_trace = e.error.stack;
+    }
 
 	//収集サーバにエラー情報を送信
 	var xhr = new XMLHttpRequest();

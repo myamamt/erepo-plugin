@@ -77,6 +77,16 @@ var getListElements = function(data, dateString) {
         userAgentTr.appendChild(userAgentValueTd);
         smallTable.appendChild(userAgentTr);
 
+        var messageTr = document.createElement('tr');
+        var messageKeyTd = document.createElement('td');
+        messageKeyTd.innerText = 'エラーメッセージ';
+        messageKeyTd.classList.add('w100');
+        var messageValueTd = document.createElement('td');
+        messageValueTd.innerText = info.message;
+        messageTr.appendChild(messageKeyTd);
+        messageTr.appendChild(messageValueTd);
+        smallTable.appendChild(messageTr);
+
         if (info.stackTrace) {
             var stackTraceTr = document.createElement('tr');
             var stackTraceKeyTd = document.createElement('td');
@@ -151,5 +161,10 @@ window.onload = function() {
                 }
             }
         }
+    });
+
+    document.getElementById('clear').addEventListener('click', function (e) {
+        chrome.storage.local.clear();
+        location.reload();
     });
 };
