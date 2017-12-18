@@ -8,19 +8,24 @@
         body {
             background-color: #eedddd;
         }
-
         #contents {
             width: 50%;
             background-color: white;
             margin: 0 auto;
             padding: 5px;
+            border-radius: 5px;
+        }
+        .right {
+            text-align: right;
         }
     </style>
 </head>
 <body>
 <div id="contents">
-    <a href="list.html">送信済みエラー情報閲覧画面へ</a>
-    <h3>エラーリポジトリプラグイン 設定画面</h3>
+    <div class="right">
+        <a href="list.html">送信済みエラー情報閲覧画面へ</a>
+    </div>
+    <h2>エラーリポジトリプラグイン 設定画面</h2>
     <input type="checkbox" id="query"/>
     <label for="query">URLのクエリ部分を送信</label><br/>
     <input type="checkbox" id="cookie"/>

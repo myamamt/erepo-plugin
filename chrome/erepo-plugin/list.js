@@ -135,7 +135,7 @@ var getListElements = function(data, dateString) {
         var buttonTd = document.createElement('td');
         buttonTd.classList.add('w15', 'buttonTd');
         var button = document.createElement('button');
-        button.innerText = '削除';
+        button.innerText = '削除申請';
         button.addEventListener('click', function () {
             del(info.url, info.date, info.userAgent, dateString);
         });
@@ -150,14 +150,14 @@ var getListElements = function(data, dateString) {
 window.onload = function() {
     chrome.storage.local.get('list', function(data) {
         if (data.list) {
-            var result = document.getElementById('result');
+            var contents = document.getElementById('contents');
             for (var date in data.list) {
                 if (data.list.hasOwnProperty(date)) {
                     var hr = document.createElement('hr');
-                    result.appendChild(hr);
+                    contents.appendChild(hr);
                     var elements = getListElements(data, date);
-                    result.appendChild(elements.h3);
-                    result.appendChild(elements.table);
+                    contents.appendChild(elements.h3);
+                    contents.appendChild(elements.table);
                 }
             }
         }

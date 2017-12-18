@@ -7,11 +7,15 @@
         body {
             background-color: #eedddd;
         }
-        #result {
+        #contents {
             background-color: white;
             width: 600px;
             padding: 5px;
             margin: auto;
+            border-radius: 5px;
+        }
+        .right {
+            text-align: right;
         }
         table {
             border-collapse: collapse;
@@ -42,9 +46,11 @@
     </style>
 </head>
 <body>
-<div id="result">
-    <a href="options.html">設定画面へ</a>
-    <hr/>
+<div id="contents">
+    <div class="right">
+        <a href="options.html">設定画面へ</a>
+    </div>
+    <h2>エラーリポジトリプラグイン 送信済みエラー情報閲覧画面</h2>
     <a id="clear" href="#">ブラウザに保存したエラー情報をクリアする</a>
 </div>
 <script src="list.js"></script>
