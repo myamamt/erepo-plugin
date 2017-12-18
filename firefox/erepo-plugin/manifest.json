@@ -1,13 +1,29 @@
 {
-	"manifest_version": 2,
-	"name": "ErrorCollector",
-	"version": "1.0.0",
+  "manifest_version": 2,
+  "name": "Error Repository Plugin",
+  "version": "1.0.0",
 
-	"content_scripts": [{
-		"matches": ["<all_urls>"],
-    	"js": ["script.js"],
-    	"run_at": "document_start"
-	}],
+  "permissions": [
+    "tabs",
+    "storage",
+    "http://localhost:8443/erepo"
+  ],
 
-	"permissions": ["https://tyr.ics.es.osaka-u.ac.jp/error-collecter"]
+  "background": {
+    "scripts": [ "background.js" ]
+  },
+
+  "content_scripts": [{
+    "matches": [ "<all_urls>" ],
+    "js": [ "script.js" ],
+    "run_at": "document_start"
+  }],
+
+  "browser_action": {
+    "default_icon": "icon.png"
+  },
+
+  "options_ui": {
+    "page": "options.html"
+  }
 }
