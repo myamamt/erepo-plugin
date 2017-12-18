@@ -6,7 +6,6 @@ var hideQuery = function(str) {
 };
 
 window.addEventListener('error', function(e) {
-    console.log(e);
     var info = {
         fileName: e.filename,
         lineNumber: e.lineno,
@@ -21,7 +20,7 @@ window.addEventListener('error', function(e) {
         info.stack_trace = e.error.stack;
     }
 
-    browser.storage.sync.get(['query', 'cookie'], function(setting) {
+    browser.storage.local.get(['query', 'cookie'], function(setting) {
         if (setting['query']) {
             info.url = window.location.href;
         } else {

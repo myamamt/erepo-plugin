@@ -1,10 +1,10 @@
 window.onload = function() {
-    browser.storage.sync.get('query', function(data) {
+    browser.storage.local.get('query', function(data) {
         if (data['query']) {
             document.getElementById('query').checked = true;
         }
     });
-    browser.storage.sync.get('cookie', function(data) {
+    browser.storage.local.get('cookie', function(data) {
         if (data['cookie']) {
             document.getElementById('cookie').checked = true;
         }
@@ -17,7 +17,7 @@ var save = function() {
         'query': document.getElementById('query').checked,
         'cookie': document.getElementById('cookie').checked
     };
-    browser.storage.sync.set(data, function() {
+    browser.storage.local.set(data, function() {
         alert('設定を保存しました');
     });
 };
