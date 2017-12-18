@@ -23,8 +23,8 @@ var del = function(url, date, userAgent, dateString) {
     };
 
     var xhr = new XMLHttpRequest();
-    xhr.open('POST', 'http://localhost:8443/erepo/api/info/remove');
-    // xhr.open('POST', 'https://tyr.ics.es.osaka-u.ac.jp/erepo/api/info/');
+    // xhr.open('POST', 'http://localhost:8443/erepo/api/info/remove');
+    xhr.open('POST', 'https://tyr.ics.es.osaka-u.ac.jp/erepo/api/info/');
     xhr.setRequestHeader("Content-Type", "application/json");
     xhr.onreadystatechange = function() {
         if (xhr.readyState === 4 && xhr.response) {
