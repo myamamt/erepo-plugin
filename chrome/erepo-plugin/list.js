@@ -11,7 +11,9 @@ var removeInfo = function (url, date, userAgent, dateString) {
         if (data.list[dateString].length === 0) {
             data.list[dateString] = undefined;
         }
-        chrome.storage.local.set(data);
+        chrome.storage.local.set(data, function () {
+            location.reload();
+        });
     });
 };
 
@@ -29,7 +31,6 @@ var del = function(url, date, userAgent, dateString) {
     xhr.onreadystatechange = function() {
         if (xhr.readyState === 4 && xhr.response) {
             removeInfo(url, date, userAgent, dateString);
-            location.reload();
         }
     };
     xhr.send(JSON.stringify(info));

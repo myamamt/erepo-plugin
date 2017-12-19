@@ -11,7 +11,9 @@ var removeInfo = function (url, date, userAgent, dateString) {
         if (data.list[dateString].length === 0) {
             data.list[dateString] = undefined;
         }
-        browser.storage.local.set(data);
+        browser.storage.local.set(data, function () {
+            location.reload();
+        });
     });
 };
 
@@ -23,13 +25,12 @@ var del = function(url, date, userAgent, dateString) {
     };
 
     var xhr = new XMLHttpRequest();
-    xhr.open('POST', 'http://localhost:8443/erepo/api/info/remove');
-    // xhr.open('POST', 'https://tyr.ics.es.osaka-u.ac.jp/erepo/api/info/remove');
+    //xhr.open('POST', 'http://localhost:8443/erepo/api/info/remove');
+    xhr.open('POST', 'https://tyr.ics.es.osaka-u.ac.jp/erepo/api/info/remove');
     xhr.setRequestHeader("Content-Type", "application/json");
     xhr.onreadystatechange = function() {
         if (xhr.readyState === 4 && xhr.response) {
             removeInfo(url, date, userAgent, dateString);
-            location.reload();
         }
     };
     xhr.send(JSON.stringify(info));
@@ -164,7 +165,8 @@ window.onload = function() {
     });
 
     document.getElementById('clear').addEventListener('click', function (e) {
-        browser.storage.local.clear();
-        location.reload();
+        browser.storage.local.set({list: undefined}, function () {
+            location.reload();
+        });
     });
 };
