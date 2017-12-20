@@ -50,7 +50,7 @@ var getListElements = function(data, dateString) {
         var urlTr = document.createElement('tr');
         var urlKeyTd = document.createElement('td');
         urlKeyTd.innerText = 'URL';
-        urlKeyTd.classList.add('w100');
+        urlKeyTd.classList.add('w140');
         var urlValueTd = document.createElement('td');
         urlValueTd.innerText = info.url;
         urlTr.appendChild(urlKeyTd);
@@ -60,7 +60,7 @@ var getListElements = function(data, dateString) {
         var dateTr = document.createElement('tr');
         var dateKeyTd = document.createElement('td');
         dateKeyTd.innerText = '日時';
-        dateKeyTd.classList.add('w100');
+        dateKeyTd.classList.add('w140');
         var dateValueTd = document.createElement('td');
         dateValueTd.innerText = new Date(info.date).toLocaleString();
         dateTr.appendChild(dateKeyTd);
@@ -70,7 +70,7 @@ var getListElements = function(data, dateString) {
         var userAgentTr = document.createElement('tr');
         var userAgentKeyTd = document.createElement('td');
         userAgentKeyTd.innerText = 'ブラウザ環境';
-        userAgentKeyTd.classList.add('w100');
+        userAgentKeyTd.classList.add('w140');
         var userAgentValueTd = document.createElement('td');
         userAgentValueTd.innerText = info.userAgent;
         userAgentTr.appendChild(userAgentKeyTd);
@@ -80,7 +80,7 @@ var getListElements = function(data, dateString) {
         var messageTr = document.createElement('tr');
         var messageKeyTd = document.createElement('td');
         messageKeyTd.innerText = 'エラーメッセージ';
-        messageKeyTd.classList.add('w100');
+        messageKeyTd.classList.add('w140');
         var messageValueTd = document.createElement('td');
         messageValueTd.innerText = info.message;
         messageTr.appendChild(messageKeyTd);
@@ -91,7 +91,7 @@ var getListElements = function(data, dateString) {
             var stackTraceTr = document.createElement('tr');
             var stackTraceKeyTd = document.createElement('td');
             stackTraceKeyTd.innerText = 'スタックトレース';
-            stackTraceKeyTd.classList.add('w100');
+            stackTraceKeyTd.classList.add('w140');
             var stackTraceValueTd = document.createElement('td');
             stackTraceValueTd.innerText = info.stackTrace;
             stackTraceTr.appendChild(stackTraceKeyTd);
@@ -102,7 +102,7 @@ var getListElements = function(data, dateString) {
         var fileNameTr = document.createElement('tr');
         var fileNameKeyTd = document.createElement('td');
         fileNameKeyTd.innerText = 'ファイル名';
-        fileNameKeyTd.classList.add('w100');
+        fileNameKeyTd.classList.add('w140');
         var fileNameValueTd = document.createElement('td');
         fileNameValueTd.innerText = info.fileName;
         fileNameTr.appendChild(fileNameKeyTd);
@@ -112,7 +112,7 @@ var getListElements = function(data, dateString) {
         var numberTr = document.createElement('tr');
         var numberKeyTd = document.createElement('td');
         numberKeyTd.innerText = '行番号，列番号';
-        numberKeyTd.classList.add('w100');
+        numberKeyTd.classList.add('w140');
         var numberValueTd = document.createElement('td');
         numberValueTd.innerText = info.lineNumber + ', ' + info.columnNumber;
         numberTr.appendChild(numberKeyTd);
@@ -123,7 +123,7 @@ var getListElements = function(data, dateString) {
             var cookieTr = document.createElement('tr');
             var cookieKeyTd = document.createElement('td');
             cookieKeyTd.innerText = 'Cookie';
-            cookieKeyTd.classList.add('w100');
+            cookieKeyTd.classList.add('w140');
             var cookieValueTd = document.createElement('td');
             cookieValueTd.innerText = info.cookie;
             cookieTr.appendChild(cookieKeyTd);
