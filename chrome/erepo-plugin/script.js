@@ -83,13 +83,18 @@ var saveInfo = function(info) {
 
         // 重複していなければエラー情報を送信
         if (conflictFlg === false) {
-            data.list[localDateString].push(info);
-            chrome.storage.local.set(data);
-
             var xhr = new XMLHttpRequest();
-            // xhr.open('POST', 'http://localhost:8443/erepo/api/info/');
-            xhr.open('POST', 'https://tyr.ics.es.osaka-u.ac.jp/erepo/api/info/');
+            xhr.open('POST', 'https://tyr.ics.es.osaka-u.ac.jp/erepo/api/info');
             xhr.setRequestHeader("Content-Type", "application/json");
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === 4 && xhr.response) {
+                    var res = JSON.parse(xhr.response);
+                    if (res.infoId) {
+                        data.list[localDateString].push(info);
+                        chrome.storage.local.set(data);
+                    }
+                }
+            };
             xhr.send(JSON.stringify(info));
         }
     });
