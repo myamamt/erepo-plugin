@@ -2,7 +2,7 @@ console.log('Error Repository Plugin starts monitoring');
 
 // URLのクエリ部分を隠すfunction
 var hideQuery = function(str) {
-    return str.replace(/(https?:.*?\?).*/g, '$1[query]');
+    return str.replace(/(https?:.*?\?).+/g, '$1[query]');
 };
 
 // content scriptからスタックトレース(e.error.stack)を取得できないため
