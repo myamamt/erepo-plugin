@@ -6,7 +6,6 @@
   "permissions": [
     "tabs",
     "storage",
-    "http://localhost:8443/erepo/api/info",
     "https://tyr.ics.es.osaka-u.ac.jp/erepo/api/info"
   ],
 
